@@ -4,13 +4,13 @@ type NavLink = {
 };
 
 export const links: NavLink[] = [
-    { href: '/', label: 'home' },
-    { href: '/favorites ', label: 'favorites' },
-    { href: '/bookings ', label: 'bookings' },
-    { href: '/reviews ', label: 'reviews' },
-    { href: '/reservations ', label: 'reservations' },
-    { href: '/rentals/create ', label: 'create rental' },
-    { href: '/rentals', label: 'my rentals' },
-    { href: '/admin', label: 'admin' },
-    { href: '/profile ', label: 'profile' },
+    { href: '/', label: "Page d'accueil" },
+    { href: '/favorites ', label: 'Favoris' },
+    { href: '/bookings ', label: 'Réservations en cours' },
+    { href: '/reviews ', label: 'Mes avis' },
+    { href: '/reservations ', label: 'Historique des réservations' },
+    { href: '/rentals/create ', label: 'Créer un hébergement' },
+    { href: '/rentals', label: 'Mes hébergements' },
+    { href: '/admin', label: 'Administration' },
+    { href: '/profile ', label: 'Profil' },
 ];
