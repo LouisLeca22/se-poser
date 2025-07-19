@@ -1,7 +1,6 @@
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import './globals.css';
-import Navbar from '@/components/navbar/Navbar';
 import Providers from './providers';
 import { ClerkProvider } from "@clerk/nextjs"
 
@@ -23,8 +22,7 @@ export default function RootLayout({
       <html lang='fr' suppressHydrationWarning>
         <body className={inter.className}>
           <Providers>
-            <Navbar />
-            <main className='container py-10'>{children}</main>
+            {children}
           </Providers>
         </body>
       </html>

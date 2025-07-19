@@ -6,7 +6,7 @@ import { auth, clerkClient, currentUser } from "@clerk/nextjs/server"
 import { revalidatePath } from "next/cache"
 import { redirect } from "next/navigation"
 import { uploadImage } from "./supabase"
-import { validateFrenchAddress } from "@/lib/validateFrenchAddress"
+import { validateFrenchAddress } from "@/utils/validateFrenchAddress"
 
 
 const getAuthUser = async () => {
@@ -160,4 +160,30 @@ export const createPropertyAction = async (
     }
 
     redirect("/")
+}
+
+export const fetchProperties = async ({ search = '', category, city }: { search?: string, category?: string, city?: string }) => {
+    const properties = await db.property.findMany({
+        where: {
+            category,
+            OR: [
+                { name: { contains: search, mode: 'insensitive' } },
+                { tagline: { contains: search, mode: 'insensitive' } },
+            ],
+            city
+        },
+        select: {
+            id: true,
+            name: true,
+            image: true,
+            tagline: true,
+            city: true,
+            price: true
+        },
+        orderBy: {
+            createdAt: 'desc'
+        }
+    })
+
+    return properties
 }
