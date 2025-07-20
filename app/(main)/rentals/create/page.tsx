@@ -33,12 +33,12 @@ function CreatePropertyPage() {
                         <ImageInput />
                     </div>
                     <h3 className="text-lg mt-8 mb-4 font-medium">
-                        Détails de l&aposhébergement
+                        Détails de l&apos;hébergement
                     </h3>
-                    <CounterInput detail="guests" />
-                    <CounterInput detail="bedrooms" />
-                    <CounterInput detail="beds" />
-                    <CounterInput detail="baths" />
+                    <CounterInput detail="voyageurs" />
+                    <CounterInput detail="chambres" />
+                    <CounterInput detail="lits" />
+                    <CounterInput detail="salles de bain" />
                     <h3 className="text-lg mt-10 mb-6 font-medium">Équipements</h3>
                     <AmenitiesInput />
                     <SubmitButton text="Créer l'hébergement" className="mt-12" />

@@ -31,7 +31,7 @@ import {
 export const amenities: Amenity[] = [
     { name: 'stockage en ligne', icon: FiCloud, selected: false },
     { name: 'parking', icon: FiTruck, selected: false },
-    { name: 'foyer extérieur', icon: FiZap, selected: false },
+    { name: 'brasero', icon: FiZap, selected: false },
     { name: 'barbecue', icon: FiWind, selected: false },
     { name: 'mobilier d’extérieur', icon: FiSun, selected: false },
     { name: 'salle de bain privée', icon: FiCoffee, selected: false },

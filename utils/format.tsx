@@ -7,3 +7,11 @@ export const formatCurrency = (amount: number | null) => {
         maximumFractionDigits: 0,
     }).format(value);
 };
+
+export function formatQuantity(quantity: number, noun: string): string {
+    if (quantity === 1) return `${quantity} ${noun}`;
+
+    const words = noun.split(" ");
+    words[0] += "s"; // Add 's' to the first word only
+    return `${quantity} ${words.join(" ")}`;
+}
