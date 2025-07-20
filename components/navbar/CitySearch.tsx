@@ -1,6 +1,6 @@
 'use client'
 
-import { useSearchParams, usePathname, useRouter } from "next/navigation"
+import { useSearchParams, useRouter } from "next/navigation"
 
 import { Input } from "@/components/ui/input"
 import React, { useState, useEffect, useRef } from 'react'
@@ -18,7 +18,7 @@ const name = "city"
 
 function CityInput() {
     const searchParams = useSearchParams()
-    const pathname = usePathname()
+    
     const { replace } = useRouter()
 
     const [city, setCity] = useState(searchParams.get("city")?.toString() || "")
@@ -58,7 +58,7 @@ function CityInput() {
 
         if (!city) {
             params.delete("city")
-            replace(`${pathname}?${params.toString()}`)
+            replace(`/?${params.toString()}`)
 
             setSuggestions([])
             setShowList(false)
@@ -95,7 +95,7 @@ function CityInput() {
         } else {
             params.delete("city")
         }
-        replace(`${pathname}?${params.toString()}`)
+        replace(`/?${params.toString()}`)
     }
 
     return (
