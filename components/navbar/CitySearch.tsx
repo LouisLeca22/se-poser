@@ -1,124 +1,96 @@
-'use client'
-
+"use client"
+import { Input } from "../ui/input"
 import { useSearchParams, useRouter } from "next/navigation"
+import { useDebouncedCallback } from "use-debounce"
+import { useState, useEffect } from "react"
 
-import { Input } from "@/components/ui/input"
-import React, { useState, useEffect, useRef } from 'react'
-import { useDebouncedCallback } from 'use-debounce'
-
-
-interface City {
+type City = {
     nom: string
     code: string
-    population: number
+    departement: { code: string }
 }
 
-
-const name = "city"
-
-function CityInput() {
+function CitySearch() {
     const searchParams = useSearchParams()
-    
     const { replace } = useRouter()
 
     const [city, setCity] = useState(searchParams.get("city")?.toString() || "")
-
     const [suggestions, setSuggestions] = useState<City[]>([])
-    const [showList, setShowList] = useState(false)
-    const containerRef = useRef<HTMLDivElement>(null)
-    const ignoreNextQuery = useRef(false)
+    const [showSuggestions, setShowSuggestions] = useState(false)
 
-    const fetchSuggestions = useDebouncedCallback(async () => {
-        const res = await fetch(
-            `https://geo.api.gouv.fr/communes?nom=${encodeURIComponent(city)}&boost=population&limit=5`
-        )
-        const data: City[] = await res.json()
-        if (Array.isArray(data)) {
-            setSuggestions(data)
-            setShowList(true)
-        }
-    }, 500)
-
-    useEffect(() => {
-
-        if (!searchParams.get("city")) {
-            setCity("")
-        }
-
-    }, [searchParams.get("city")])
-
-
-    useEffect(() => {
-        // if (ignoreNextQuery.current) {
-        //     ignoreNextQuery.current = false
-        //     return
-        // }
-
+    const updateURL = (selectedCity: string) => {
         const params = new URLSearchParams(searchParams)
-
-        if (!city) {
-            params.delete("city")
-            replace(`/?${params.toString()}`)
-
-            setSuggestions([])
-            setShowList(false)
-            return
-        }
-
-
-        fetchSuggestions()
-    }, [city])
-
-    useEffect(() => {
-        function handleClickOutside(event: MouseEvent) {
-            if (containerRef.current && !containerRef.current.contains(event.target as Node)) {
-                setShowList(false)
-            }
-        }
-
-        document.addEventListener('click', handleClickOutside)
-        return () => {
-            document.removeEventListener('click', handleClickOutside)
-        }
-    }, [])
-
-
-
-    const handleSelect = (value: string) => {
-        ignoreNextQuery.current = true
-        setCity(value)
-        setSuggestions([])
-        setShowList(false)
-        const params = new URLSearchParams(searchParams)
-        if (city) {
-            params.set("city", value)
+        if (selectedCity) {
+            params.set("city", selectedCity)
         } else {
             params.delete("city")
         }
         replace(`/?${params.toString()}`)
     }
 
+    const fetchSuggestions = useDebouncedCallback(async (query: string) => {
+        if (query.length < 2) {
+            setSuggestions([])
+            return
+        }
+
+        try {
+            const res = await fetch(
+                `https://geo.api.gouv.fr/communes?nom=${query}&fields=nom,code,departement&boost=population&limit=5`
+            )
+            if (!res.ok) throw new Error("Failed to fetch cities")
+            const data = await res.json()
+            setSuggestions(data)
+            setShowSuggestions(true)
+        } catch (err) {
+            setSuggestions([])
+        }
+    }, 300)
+
+    useEffect(() => {
+        if (!searchParams.get("city")) {
+            setCity("")
+        }
+    }, [searchParams.get("city")])
+
     return (
-        <div className="w-full relative" ref={containerRef}>
+        <div className="relative w-full">
             <Input
-                id={name}
-                name={name}
                 type="text"
-                placeholder="Renseigner la ville..."
-                autoComplete="off"
-                value={city}
-                onChange={(e) => setCity(e.target.value)}
+                placeholder="Rechercher une ville..."
                 className="w-full border px-3 py-2 rounded"
-                required />
-            {showList && suggestions.length > 0 && (
-                <ul className="absolute border bg-white mt-1 w-full z-10 rounded shadow max-h-60 overflow-auto">
+                value={city}
+                onChange={(e) => {
+                    const value = e.target.value
+                    setCity(value)
+                    fetchSuggestions(value)
+                    if (value.trim() === "") {
+                        updateURL("")
+                        setSuggestions([])
+                    }
+                }}
+                onFocus={() => {
+                    if (suggestions.length > 0) setShowSuggestions(true)
+                }}
+                onBlur={() => {
+                    setTimeout(() => setShowSuggestions(false), 100)
+                }}
+            />
+            {showSuggestions && suggestions.length > 0 && (
+                <ul className="absolute z-10 w-full mt-1 bg-white border border-gray-300 rounded shadow-md max-h-60 overflow-auto dark:bg-muted dark:border-gray-600">
                     {suggestions.map((city) => (
                         <li
                             key={city.code}
-                            onClick={() => handleSelect(city.nom)}
-                            className="cursor-pointer hover:bg-primary hover:text-white px-3 py-2"
+                            className="px-3 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer"
+                            onMouseDown={() => {
+                                const selected = city.nom
+                                setCity(selected)
+                                updateURL(selected)
+                                setSuggestions([])
+                                setShowSuggestions(false)
+                            }}
                         >
-                            {city.nom} ({city.code})
+                            {city.nom} ({city.departement.code})
                         </li>
                     ))}
                 </ul>
@@ -127,4 +99,4 @@ function CityInput() {
     )
 }
 
-export default CityInput
+export default CitySearch

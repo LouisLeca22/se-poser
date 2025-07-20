@@ -4,86 +4,54 @@
 import { Label } from "@/components/ui/label"
 import { Input } from "@/components/ui/input"
 
-import React, { useState, useEffect, useRef } from 'react'
-import { useDebounce } from 'use-debounce'
+import React, { useState } from 'react'
+import { useDebouncedCallback } from 'use-debounce'
 
-
-interface Feature {
+export interface AddressFeature {
     properties: {
         label: string
+        city: string
+        postcode: string
+        name: string
+        context: string
     }
 }
 
-interface AddressApiResponse {
-    features: Feature[]
+export interface AddressApiResponse {
+    features: AddressFeature[]
 }
-
 
 const name = "address"
 
 function AddressInput({ defaultValue }: { defaultValue?: string }) {
 
     const [query, setQuery] = useState('')
-    const [debouncedQuery] = useDebounce(query, 300)
-    const [suggestions, setSuggestions] = useState<string[]>([])
-    const [showList, setShowList] = useState(false)
-    const containerRef = useRef<HTMLDivElement>(null)
-    const ignoreNextQuery = useRef(false)
+    const [suggestions, setSuggestions] = useState<AddressFeature[]>([])
+    const [showSuggestions, setShowSuggestions] = useState(false)
 
-    useEffect(() => {
-        if (ignoreNextQuery.current) {
-            ignoreNextQuery.current = false
-            return
-        }
 
-        if (debouncedQuery.length < 3) {
+    const fetchSuggestions = useDebouncedCallback(async (query: string) => {
+        if (query.length < 2) {
             setSuggestions([])
-            setShowList(false)
             return
         }
 
-
-        async function fetchSuggestions() {
+        try {
             const res = await fetch(
-                `https://api-adresse.data.gouv.fr/search/?q=${encodeURIComponent(debouncedQuery)}&limit=5`
+                `https://api-adresse.data.gouv.fr/search/?q=${encodeURIComponent(query)}&limit=5`
             )
-            const data: AddressApiResponse = await res.json()
-            if (data && data.features) {
-                const hits = data.features.map((f) => f.properties.label)
-                setSuggestions(hits)
-                setShowList(true)
-            }
+            if (!res.ok) throw new Error("Failed to fetch cities")
+            const data = await res.json()
+            setSuggestions(data.features || [])
+            setShowSuggestions(true)
+        } catch (err) {
+            setSuggestions([])
         }
+    }, 300)
 
-        fetchSuggestions()
-    }, [debouncedQuery])
-
-    useEffect(() => {
-        function handleClickOutside(event: MouseEvent) {
-            if (
-                containerRef.current &&
-                !containerRef.current.contains(event.target as Node)
-            ) {
-                setShowList(false)
-            }
-        }
-
-        document.addEventListener('click', handleClickOutside) // changed here
-        return () => {
-            document.removeEventListener('click', handleClickOutside)
-        }
-    }, [])
-
-    const handleSelect = (value: string) => {
-        ignoreNextQuery.current = true
-        setQuery(value)
-        setSuggestions([])
-        setShowList(false)
-
-    }
 
     return (
-        <div className="mb-2 relative" ref={containerRef}>
+        <div className="mb-2 relative">
             <Label htmlFor={name} className="capitalize">Adresse</Label>
             <Input
                 id={name}
@@ -93,18 +61,35 @@ function AddressInput({ defaultValue }: { defaultValue?: string }) {
                 placeholder="Renseigner l'adresse"
                 autoComplete="off"
                 value={query}
-                onChange={(e) => setQuery(e.target.value)}
+                onChange={(e) => {
+                    const value = e.target.value
+                    setQuery(value)
+                    fetchSuggestions(value)
+                    if (value.trim() === "") {
+                        setSuggestions([])
+                    }
+                }}
+                onFocus={() => {
+                    if (suggestions.length > 0) setShowSuggestions(true)
+                }}
+                onBlur={() => {
+                    setTimeout(() => setShowSuggestions(false), 100)
+                }}
                 className="w-full border px-3 py-2 rounded"
                 required />
-            {showList && suggestions.length > 0 && (
+            {showSuggestions && suggestions.length > 0 && (
                 <ul className="absolute border bg-white mt-1 w-full z-10 rounded shadow max-h-60 overflow-auto">
                     {suggestions.map((s, index) => (
                         <li
                             key={index}
-                            onClick={() => handleSelect(s)}
+                            onMouseDown={() => {
+                                setQuery(s.properties.label)
+                                setSuggestions([])
+                                setShowSuggestions(false)
+                            }}
                             className="cursor-pointer hover:bg-primary hover:text-white px-3 py-2"
                         >
-                            {s}
+                            {s.properties.label}
                         </li>
                     ))}
                 </ul>
