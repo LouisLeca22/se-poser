@@ -8,6 +8,8 @@ export const profileSchema = z.object({
 })
 
 export function validateWithZodSchema<T>(schema: ZodSchema<T>, data: unknown): T {
+    console.log("✅ Données reçues par le schema :", data);  // Ajoute ceci
+
     const result = schema.safeParse(data)
     if (!result.success) {
         const errors = result.error.errors.map((error) => error.message)
