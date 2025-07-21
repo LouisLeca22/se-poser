@@ -15,3 +15,11 @@ export function formatQuantity(quantity: number, noun: string): string {
     words[0] += "s"; // Add 's' to the first word only
     return `${quantity} ${words.join(" ")}`;
 }
+
+export const formatDate = (date: Date) => {
+    return new Intl.DateTimeFormat('fr-FR', {
+        year: "numeric",
+        month: "long",
+        day: "numeric"
+    }).format(date)
+}
