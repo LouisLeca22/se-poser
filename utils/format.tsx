@@ -16,10 +16,14 @@ export function formatQuantity(quantity: number, noun: string): string {
     return `${quantity} ${words.join(" ")}`;
 }
 
-export const formatDate = (date: Date) => {
-    return new Intl.DateTimeFormat('fr-FR', {
+export const formatDate = (date: Date, onlyMonth?: boolean) => {
+    const options: Intl.DateTimeFormatOptions = {
         year: "numeric",
-        month: "long",
-        day: "numeric"
-    }).format(date)
+        month: "long"
+    }
+    if (!onlyMonth) {
+        options.day = "numeric"
+    }
+
+    return new Intl.DateTimeFormat('fr-FR', options).format(date)
 }
