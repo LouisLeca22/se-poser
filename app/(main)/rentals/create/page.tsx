@@ -23,7 +23,7 @@ function CreatePropertyPage() {
                 <FormContainer action={createPropertyAction}>
                     <div className="grid md:grid-cols-2 gap-8 mb-4">
                         <FormInput name='name' type="text" label="Nom (20 caractères max)" defaultValue="Cabin in Latvia" />
-                        <FormInput name='tagline' type="text" label="Phrase d'accroche (100 caractères max)" defaultValue="Dream gateaway awaits you here" />
+                        <FormInput name='tagline' type="text" label="Phrase d'accroche (30 caractères max)" defaultValue="Dream gateaway awaits you here" />
                         <PriceInput />
                         <CategoriesInput />
                     </div>

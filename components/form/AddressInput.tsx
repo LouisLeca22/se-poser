@@ -4,7 +4,7 @@
 import { Label } from "@/components/ui/label"
 import { Input } from "@/components/ui/input"
 
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useDebouncedCallback } from 'use-debounce'
 
 export interface AddressFeature {
@@ -48,6 +48,12 @@ function AddressInput({ defaultValue }: { defaultValue?: string }) {
             setSuggestions([])
         }
     }, 300)
+
+    useEffect(() => {
+        if (defaultValue) {
+            setQuery(defaultValue)
+        }
+    }, [defaultValue])
 
 
     return (

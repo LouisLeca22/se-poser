@@ -14,7 +14,7 @@ const templateDefaultDescription = "Glamping à la française dans un chalet en 
 function TextAreaInput({ name, labelText, defaultValue }: TextareaInputProps) {
     return (
         <div className="mb-2">
-            <Label htmlFor={name} className="capitalize">
+            <Label htmlFor={name}>
                 {labelText || name}
             </Label>
             <Textarea id={name} name={name} defaultValue={defaultValue || templateDefaultDescription} rows={5} required className="leading-loose" />
