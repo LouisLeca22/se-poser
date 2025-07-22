@@ -8,7 +8,6 @@ export const profileSchema = z.object({
 })
 
 export function validateWithZodSchema<T>(schema: ZodSchema<T>, data: unknown): T {
-    console.log("✅ Données reçues par le schema :", data);  // Ajoute ceci
 
     const result = schema.safeParse(data)
     if (!result.success) {
@@ -69,16 +68,16 @@ export const propertySchema = z.object({
     ),
     address: z.string().min(5, "L'adresse doit contenir au minimum 5 caractères"),
     guests: z.coerce.number().int().min(0, {
-        message: 'guest amount must be a positive number.',
+        message: 'Le nombre de voyageurs doit être positif.',
     }),
     bedrooms: z.coerce.number().int().min(0, {
-        message: 'bedrooms amount must be a positive number.',
+        message: 'Le nombre de chambres doit être positif.',
     }),
     beds: z.coerce.number().int().min(0, {
-        message: 'beds amount must be a positive number.',
+        message: 'Le nombre de lits doit être positif.',
     }),
     baths: z.coerce.number().int().min(0, {
-        message: 'bahts amount must be a positive number.',
+        message: 'Le nombre de salles de bain doit être positif.',
     }),
     amenities: z.string(),
 });
