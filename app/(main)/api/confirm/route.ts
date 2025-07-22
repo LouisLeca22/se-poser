@@ -13,7 +13,7 @@ export const GET = async (req: NextRequest) => {
         const session = await stripe.checkout.sessions.retrieve(session_id);
         const bookingId = session.metadata?.bookingId;
         if (session.status !== 'complete' || !bookingId) {
-            throw new Error('Something went wrong');
+            throw new Error("Une erreur s'est produite");
         }
         await db.booking.update({
             where: { id: bookingId },

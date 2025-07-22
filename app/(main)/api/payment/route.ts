@@ -46,9 +46,9 @@ export const POST = async (req: NextRequest, res: NextResponse) => {
                         product_data: {
                             name: `${name}`,
                             images: [image],
-                            description: `Stay in this wonderful place for ${totalNights} nights, from ${formatDate(
+                            description: `Restez dans cet endroit merveilleux pour ${totalNights} nuits, à partir du ${formatDate(
                                 checkIn
-                            )} to ${formatDate(checkOut)}. Enjoy your stay!`,
+                            )} jusqu'au ${formatDate(checkOut)}. Profitez de votre sejour !`,
                         },
                         unit_amount: orderTotal * 100,
                     },
