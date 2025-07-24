@@ -65,7 +65,7 @@ export const categories: Category[] = [
     },
     {
         name: 'magic',
-        label: "féerique",
+        label: "Féerique",
         icon: GiMushroomHouse,
     },
     {
