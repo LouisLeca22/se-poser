@@ -14,6 +14,7 @@ function NavSearch() {
         const params = new URLSearchParams(searchParams)
         if (search) {
             params.set("search", value)
+            params.delete("page")
         } else {
             params.delete("search")
         }

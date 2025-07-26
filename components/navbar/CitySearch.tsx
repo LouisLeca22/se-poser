@@ -22,6 +22,7 @@ function CitySearch() {
         const params = new URLSearchParams(searchParams)
         if (selectedCity) {
             params.set("city", selectedCity)
+            params.delete("page")
         } else {
             params.delete("city")
         }

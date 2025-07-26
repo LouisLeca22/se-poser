@@ -169,31 +169,60 @@ export const createPropertyAction = async (
     redirect("/")
 }
 
-export const fetchProperties = async ({ search = '', category, city }: { search?: string, category?: string, city?: string }) => {
-    const properties = await db.property.findMany({
-        where: {
-            category,
-            OR: [
-                { name: { contains: search, mode: 'insensitive' } },
-                { tagline: { contains: search, mode: 'insensitive' } },
-            ],
-            city
-        },
-        select: {
-            id: true,
-            name: true,
-            image: true,
-            tagline: true,
-            city: true,
-            price: true
-        },
-        orderBy: {
-            createdAt: 'desc'
-        }
-    })
+export const fetchProperties = async ({
+    search = '',
+    category,
+    city,
+    page = 1,
+    perPage = 10,
+}: {
+    search?: string;
+    category?: string;
+    city?: string;
+    page?: number;
+    perPage?: number;
+}) => {
+    const skip = (page - 1) * perPage;
 
-    return properties
-}
+    const [properties, totalCount] = await Promise.all([
+        db.property.findMany({
+            where: {
+                category,
+                OR: [
+                    { name: { contains: search, mode: 'insensitive' } },
+                    { tagline: { contains: search, mode: 'insensitive' } },
+                ],
+                city,
+            },
+            select: {
+                id: true,
+                name: true,
+                image: true,
+                tagline: true,
+                city: true,
+                price: true,
+            },
+            orderBy: {
+                createdAt: 'desc',
+            },
+            skip,
+            take: perPage,
+        }),
+        db.property.count({
+            where: {
+                category,
+                OR: [
+                    { name: { contains: search, mode: 'insensitive' } },
+                    { tagline: { contains: search, mode: 'insensitive' } },
+                ],
+                city,
+            },
+        }),
+    ]);
+
+    return { properties, totalCount };
+};
+
 
 export const fetchFavoriteId = async ({ propertyId }: { propertyId: string }) => {
     const user = await getAuthUser()
