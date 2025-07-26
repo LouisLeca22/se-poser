@@ -3,7 +3,6 @@ import PropertiesList from './PropertiesList';
 import EmptyList from './EmptyList';
 import type { PropertyCardProps } from '@/utils/types';
 import HomePagination from './HomePagination';
-import { redirect } from 'next/dist/server/api-utils';
 
 const PER_PAGE = 10;
 

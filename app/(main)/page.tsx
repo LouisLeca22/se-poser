@@ -6,7 +6,13 @@ const HomePage = ({ searchParams }: { searchParams: { category?: string, search?
 
   return <section>
     <CategoriesList category={searchParams.category} search={searchParams.search} city={searchParams.city} />
-    <Suspense fallback={<LoadingCards />}>
+    <Suspense key={JSON.stringify({
+      category: searchParams.category,
+      search: searchParams.search,
+      city: searchParams.city,
+      page: searchParams.page
+    })} fallback={<LoadingCards />}>
+
       <PropertiesContainer category={searchParams.category} search={searchParams.search} city={searchParams.city} page={searchParams.page && parseInt(searchParams.page) > 0 ? parseInt(searchParams.page) : 1} />
     </Suspense>
   </section>
