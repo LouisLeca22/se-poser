@@ -84,7 +84,7 @@ function AddressInput({ defaultValue }: { defaultValue?: string }) {
                 className="w-full border px-3 py-2 rounded"
                 required />
             {showSuggestions && suggestions.length > 0 && (
-                <ul className="absolute border bg-white mt-1 w-full z-10 rounded shadow max-h-60 overflow-auto">
+                <ul className="absolute border border-gray-300 bg-white mt-1 w-full z-10 rounded shadow-md max-h-60 overflow-auto dark:bg-muted dark:border-gray-600">
                     {suggestions.map((s, index) => (
                         <li
                             key={index}
