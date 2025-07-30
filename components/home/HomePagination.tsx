@@ -36,11 +36,21 @@ export default function HomePagination({ currentPage, totalPages, category, sear
                             } onClick={() => goToPage(currentPage - 1)} />
                     </PaginationItem>
                     <PaginationItem>
-                        <PaginationLink onClick={() => goToPage(1)} >1</PaginationLink>
+                        <PaginationLink
+                            aria-disabled={currentPage == 1}
+                            tabIndex={currentPage == 1 ? -1 : undefined}
+                            className={
+                                currentPage == 1 ? "pointer-events-none opacity-50" : undefined}
+                            onClick={() => goToPage(1)} >1</PaginationLink>
                     </PaginationItem>
                     <PaginationItem>
                         <PaginationEllipsis />
-
+                    </PaginationItem>
+                    <PaginationItem>
+                        <PaginationLink aria-disabled={currentPage == totalPages}
+                            tabIndex={currentPage == totalPages ? -1 : undefined}
+                            className={
+                                currentPage == totalPages ? "pointer-events-none opacity-50" : undefined} onClick={() => goToPage(totalPages)} >{totalPages}</PaginationLink>
                     </PaginationItem>
                     <PaginationItem>
                         <PaginationNext aria-disabled={currentPage == totalPages}
