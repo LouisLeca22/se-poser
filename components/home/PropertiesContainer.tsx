@@ -8,6 +8,8 @@ const PER_PAGE = 10;
 
 
 async function PropertiesContainer({ category, search, city, page = 1 }: { category?: string, search?: string, city?: string, page?: number }) {
+    const start = Date.now();
+
     const { properties, totalCount }: { properties: PropertyCardProps[]; totalCount: number } =
         await fetchProperties({ category, search, city, page, perPage: PER_PAGE });
     if (properties.length == 0) {
@@ -16,6 +18,7 @@ async function PropertiesContainer({ category, search, city, page = 1 }: { categ
         )
     }
 
+    console.log(`⏱️ fetchProperties took ${Date.now() - start}ms`);
 
     const totalPages = Math.ceil(totalCount / PER_PAGE);
 
