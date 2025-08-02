@@ -16,7 +16,7 @@ function BookingCalendar() {
     const currentDate = new Date()
     const [range, setRange] = useState<DateRange | undefined>(defaultSelected)
     const bookings = useProperty((state) => state.bookings)
-    const {toast} = useToast()
+    const { toast } = useToast()
 
     const blockPeriods = generateBlockedPeriods({
         bookings, today: currentDate
@@ -27,13 +27,13 @@ function BookingCalendar() {
 
     useEffect(() => {
         const selectedRange = generateDateRange(range)
-        const isDisabledDateIncluded = selectedRange.some((date) => {
-            if(unavailableDates[date]){
+        selectedRange.some((date) => {
+            if (unavailableDates[date]) {
                 setRange(defaultSelected)
                 toast({
                     description: "Certaines dates que vous avez séléctionnées sont déjà réservées."
                 })
-                return true 
+                return true
             }
         })
         useProperty.setState({ range })

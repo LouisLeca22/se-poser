@@ -21,7 +21,7 @@ function UserInfo({ profile: { profileImage, firstName } }: UserInfoProps) {
             />
             <div>
                 <p>
-                    Hosted by
+                    Hébergé par
                     <span className='font-bold'> {firstName}</span>
                 </p>
 

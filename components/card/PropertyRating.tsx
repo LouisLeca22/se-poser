@@ -6,7 +6,7 @@ async function PropertyRating({ propertyId, inPage }: { propertyId: string, inPa
     if (count === 0) return null
 
     const className = `flex gap-1 items-center ${inPage ? 'text-md' : "text-xs"}`
-    const countText = count > 1 ? 'reviews' : 'review'
+    const countText = "avis"
     const countValue = `(${count}) ${inPage ? countText : ''}`
     return (
 

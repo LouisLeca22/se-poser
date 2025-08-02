@@ -21,7 +21,7 @@ function SubmitReview({ propertyId }: { propertyId: string }) {
                     <FormContainer action={createReviewAction}>
                         <input type="hidden" name="propertyId" value={propertyId} />
                         <RatingInput name="rating" />
-                        <TextAreaInput name="comment" labelText='Votre avis sur cet hébérgement' defaultValue='Amazing project' />
+                        <TextAreaInput name="comment" labelText='Votre avis sur cet hébérgement' />
                         <SubmitButton text="Envoyer" className="mt-4" />
                     </FormContainer>
                 </Card>
