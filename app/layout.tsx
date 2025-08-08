@@ -3,7 +3,7 @@ import { Inter } from 'next/font/google';
 import './globals.css';
 import Providers from './providers';
 import { ClerkProvider } from "@clerk/nextjs"
-
+import { frFR } from '@clerk/localizations'
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -18,7 +18,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <ClerkProvider>
+    <ClerkProvider localization={frFR}>
       <html lang='fr' suppressHydrationWarning>
         <body className={inter.className}>
           <Providers>
