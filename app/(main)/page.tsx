@@ -7,7 +7,9 @@ const HomePage = ({ searchParams }: { searchParams: { category?: string, search?
   return <section>
     <CategoriesList category={searchParams.category} search={searchParams.search} city={searchParams.city} />
 
-    <PropertiesContainer category={searchParams.category} search={searchParams.search} city={searchParams.city} page={searchParams.page && parseInt(searchParams.page) > 0 ? parseInt(searchParams.page) : 1} />
+    <Suspense fallback={<LoadingCards />}>
+      <PropertiesContainer category={searchParams.category} search={searchParams.search} city={searchParams.city} page={searchParams.page && parseInt(searchParams.page) > 0 ? parseInt(searchParams.page) : 1} />
+    </Suspense>
 
   </section>
 
