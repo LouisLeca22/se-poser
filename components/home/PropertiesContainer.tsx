@@ -4,7 +4,7 @@ import EmptyList from './EmptyList';
 import type { PropertyCardProps } from '@/utils/types';
 import HomePagination from './HomePagination';
 
-const PER_PAGE = 10;
+const PER_PAGE = 8;
 
 
 async function PropertiesContainer({ category, search, city, page = 1 }: { category?: string, search?: string, city?: string, page?: number }) {

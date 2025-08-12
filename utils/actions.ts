@@ -174,7 +174,7 @@ export const fetchProperties = async ({
     category,
     city,
     page = 1,
-    perPage = 10,
+    perPage = 8,
 }: {
     search?: string;
     category?: string;
