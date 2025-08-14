@@ -1,7 +1,13 @@
 'use client';
 
 import { useRouter, useSearchParams } from 'next/navigation';
-import { Pagination, PaginationContent, PaginationEllipsis, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious } from '../ui/pagination';
+import { Button } from '../ui/button';
+import { MdChevronLeft, MdChevronRight } from "react-icons/md";
+
+type ButtonProps = {
+    page: number;
+    activeClass: boolean;
+};
 
 type Props = {
     currentPage: number;
@@ -24,47 +30,105 @@ export default function HomePagination({ currentPage, totalPages, category, sear
         router.push(`/?${params.toString()}`);
     };
 
-    return (
-        <div className="mt-6 flex flex-col items-center justify-center gap-4">
-            <Pagination>
-                <PaginationContent>
-                    <PaginationItem>
-                        <PaginationPrevious aria-disabled={currentPage <= 1}
-                            tabIndex={currentPage <= 1 ? -1 : undefined}
-                            className={
-                                currentPage <= 1 ? "pointer-events-none opacity-50" : undefined
-                            } onClick={() => goToPage(currentPage - 1)} />
-                    </PaginationItem>
-                    <PaginationItem>
-                        <PaginationLink
-                            aria-disabled={currentPage == 1}
-                            tabIndex={currentPage == 1 ? -1 : undefined}
-                            className={
-                                currentPage == 1 ? "pointer-events-none opacity-50" : undefined}
-                            onClick={() => goToPage(1)} >1</PaginationLink>
-                    </PaginationItem>
-                    <PaginationItem>
-                        <PaginationEllipsis />
-                    </PaginationItem>
-                    <PaginationItem>
-                        <PaginationLink aria-disabled={currentPage == totalPages}
-                            tabIndex={currentPage == totalPages ? -1 : undefined}
-                            className={
-                                currentPage == totalPages ? "pointer-events-none opacity-50" : undefined} onClick={() => goToPage(totalPages)} >{totalPages}</PaginationLink>
-                    </PaginationItem>
-                    <PaginationItem>
-                        <PaginationNext aria-disabled={currentPage == totalPages}
-                            tabIndex={currentPage == totalPages ? -1 : undefined}
-                            className={
-                                currentPage == totalPages ? "pointer-events-none opacity-50" : undefined
-                            } onClick={() => goToPage(currentPage + 1)} />
-                    </PaginationItem>
-                </PaginationContent>
-            </Pagination>
-            <span className="text-sm text-muted-foreground">
-                Page {currentPage} sur {totalPages}
-            </span>
+    const addPageButton = ({ page, activeClass }: ButtonProps) => {
+        return (
+            <Button
+                key={page}
+                size='icon'
+                variant={activeClass ? 'default' : 'outline'}
+                onClick={() => goToPage(page)}
+            >
+                {page}
+            </Button>
+        );
+    };
 
-        </div >
+    const renderPageButtons = () => {
+        const pageButtons = [];
+        pageButtons.push(
+            addPageButton({ page: 1, activeClass: currentPage === 1 })
+        );
+
+
+        if (currentPage > 3) {
+            pageButtons.push(
+                <Button size='icon' variant='outline' key='dots-1'>
+                    ...
+                </Button>
+            );
+        }
+
+        if (currentPage !== 1 && currentPage !== 2) {
+            pageButtons.push(
+                addPageButton({
+                    page: currentPage - 1,
+                    activeClass: false,
+                })
+            );
+        }
+
+        if (currentPage !== 1 && currentPage !== totalPages) {
+            pageButtons.push(
+                addPageButton({
+                    page: currentPage,
+                    activeClass: true,
+                })
+            );
+        }
+
+        if (currentPage !== totalPages && currentPage !== totalPages - 1) {
+            pageButtons.push(
+                addPageButton({
+                    page: currentPage + 1,
+                    activeClass: false,
+                })
+            );
+        }
+        if (currentPage < totalPages - 2) {
+            pageButtons.push(
+                <Button size='icon' variant='outline' key='dots-2'>
+                    ...
+                </Button>
+            );
+        }
+        pageButtons.push(
+            addPageButton({
+                page: totalPages,
+                activeClass: currentPage === totalPages,
+            })
+        );
+        return pageButtons;
+    };
+
+    return (
+        <div className='mt-12 flex items-center justify-center gap-4'>
+
+            <Button
+                className='flex items-center gap-x-2 '
+                variant='outline'
+                onClick={() => {
+                    let prevPage = currentPage - 1;
+                    if (prevPage < 1) prevPage = totalPages;
+                    goToPage(prevPage);
+                }}
+            >
+                <MdChevronLeft />
+                précédent
+            </Button>
+            {renderPageButtons()}
+
+            <Button
+                className='flex items-center gap-x-2 '
+                onClick={() => {
+                    let nextPage = currentPage + 1;
+                    if (nextPage > totalPages) nextPage = 1;
+                    goToPage(nextPage);
+                }}
+                variant='outline'
+            >
+                suivant
+                <MdChevronRight />
+            </Button>
+        </div>
     );
 }

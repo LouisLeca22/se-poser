@@ -8,7 +8,20 @@ function Navbar() {
     return (
         <nav className="border-b">
             <div className="container flex flex-col sm:flex-row sm:justify-between sm:items-center flex-wrap gap-4 py-8">
-                <Logo />
+                <div className="flex items-center gap-2">
+                    <Logo />
+                    <span className="text-sm text-muted-foreground">
+                        Créé par © {" "}
+                        <a
+                            href="https://louis-leca.web.app"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-primary"
+                        >
+                            Louis Leca
+                        </a>
+                    </span>
+                </div>
                 <div className="flex gap-4">
                     <NavSearch />
                     <CitySearch />
