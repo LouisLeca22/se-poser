@@ -37,7 +37,7 @@
 ### 1. Cloner le repo
 
 ```bash
-git clone https://github.com/ton-utilisateur/se-poser.git
+git clone https://github.com/LouisLeca22/se-poser.git
 cd se-poser
 ```
 
