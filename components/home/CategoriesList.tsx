@@ -10,7 +10,7 @@ function CategoriesList({ category, search, city }: { category?: string, search?
   return (
     <section>
       <ScrollArea className='py-6'>
-        <div className="flex gap-x-4">
+        <div className="flex justify-center gap-x-4">
           {categories.map((item) => {
             const isActive = item.name == category
             return <Link key={item.name} href={`/?category=${item.name}${searchTerm}${cityTerm}&page=1`}>
