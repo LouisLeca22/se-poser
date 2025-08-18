@@ -59,7 +59,7 @@ function CitySearch() {
             <Input
                 type="text"
                 placeholder="Rechercher une ville..."
-                className="w-full border px-3 py-2 rounded"
+                className="w-full border px-3 py-2 rounded dark:bg-muted"
                 value={city}
                 onChange={(e) => {
                     const value = e.target.value

@@ -91,44 +91,49 @@ export default function HomePagination({ currentPage, totalPages, category, sear
                 </Button>
             );
         }
+
         pageButtons.push(
             addPageButton({
                 page: totalPages,
                 activeClass: currentPage === totalPages,
             })
         );
+
+
         return pageButtons;
     };
 
-    return (
-        <div className='mt-12 flex items-center justify-center gap-4'>
+    if (totalPages > 1)
+        return (
 
-            <Button
-                className='flex items-center gap-x-2 '
-                variant='outline'
-                onClick={() => {
-                    let prevPage = currentPage - 1;
-                    if (prevPage < 1) prevPage = totalPages;
-                    goToPage(prevPage);
-                }}
-            >
-                <MdChevronLeft />
-                précédent
-            </Button>
-            {renderPageButtons()}
+            <div className='mt-12 flex items-center justify-center gap-4'>
+                <Button
+                    className='flex items-center gap-x-2 '
+                    variant='outline'
+                    onClick={() => {
+                        let prevPage = currentPage - 1;
+                        if (prevPage < 1) prevPage = totalPages;
+                        goToPage(prevPage);
+                    }}
+                >
+                    <MdChevronLeft />
+                    précédent
+                </Button>
 
-            <Button
-                className='flex items-center gap-x-2 '
-                onClick={() => {
-                    let nextPage = currentPage + 1;
-                    if (nextPage > totalPages) nextPage = 1;
-                    goToPage(nextPage);
-                }}
-                variant='outline'
-            >
-                suivant
-                <MdChevronRight />
-            </Button>
-        </div>
-    );
+                {renderPageButtons()}
+                <Button
+                    className='flex items-center gap-x-2 '
+                    onClick={() => {
+                        let nextPage = currentPage + 1;
+                        if (nextPage > totalPages) nextPage = 1;
+                        goToPage(nextPage);
+                    }}
+                    variant='outline'
+                >
+                    suivant
+                    <MdChevronRight />
+                </Button>
+
+            </div>
+        );
 }
