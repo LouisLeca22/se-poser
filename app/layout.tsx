@@ -10,6 +10,28 @@ const inter = Inter({ subsets: ['latin'] });
 export const metadata: Metadata = {
   title: 'Se poser',
   description: 'Sentez-vous chez vous, même loin de chez vous.',
+  openGraph: {
+    title: 'Se poser',
+    description: 'Sentez-vous chez vous, même loin de chez vous.',
+    url: 'https://se-poser.vercel.app',
+    siteName: 'Se poser',
+    images: [
+      {
+        url: 'https://se-poser.vercel.app/images/preview.png', // absolute URL!
+        width: 1200,
+        height: 630,
+        alt: 'Aperçu de Se poser',
+      },
+    ],
+    locale: 'fr_FR',
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Se poser',
+    description: 'Sentez-vous chez vous, même loin de chez vous.',
+    images: ['https://yourapp.vercel.app/images/preview.png'],
+  },
 };
 
 export default function RootLayout({
