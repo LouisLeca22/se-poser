@@ -17,7 +17,7 @@ export const metadata: Metadata = {
     siteName: 'Se poser',
     images: [
       {
-        url: 'https://se-poser.vercel.app/images/preview.png', // absolute URL!
+        url: 'https://se-poser.vercel.app/images/preview.png',
         width: 1200,
         height: 630,
         alt: 'Aperçu de Se poser',
@@ -30,7 +30,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: 'Se poser',
     description: 'Sentez-vous chez vous, même loin de chez vous.',
-    images: ['https://yourapp.vercel.app/images/preview.png'],
+    images: ['https://se-poser.vercel.app/images/preview.png'],
   },
 };
 
